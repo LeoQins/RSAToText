@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>离线 RSA 文本加密/解密</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>安全的RSA非对称文本加密/解密，保护你的隐私</h1>
+    <p class="subtitle">本页面完全前端执行，完全离线运行。不要泄露私钥给任何人。此网站可以传输公钥和密文-><a href="https://easychuan.cn" target="_blank" rel="noopener noreferrer">easychuan.cn</a></p>
+  </header>
+
+  <nav class="top-nav">
+    <a href="#keys">密钥生成/导入</a>
+    <a href="#encrypt">加密</a>
+    <a href="#decrypt">解密</a>
+  <button id="btnToggleTheme" type="button" style="margin-left:.5rem;">切换深色</button>
+  </nav>
+  <main class="layout">
+  <section id="keys" class="entropy-section card">
+    <h2>1. 输入随机熵 (至少 50 字符)</h2>
+    <textarea id="entropyInput" placeholder="随意敲击键盘，包含大小写、数字、符号，达到 50+ 字符" rows="3"></textarea>
+    <div class="entropy-status">
+      <span id="entropyCount">0</span> / 50
+      <button id="btnClearEntropy" type="button">清空</button>
+    </div>
+    <button id="btnGenerateKeys" disabled>生成 RSA 密钥 (2048位)</button>
+    <div id="keyGenProgress" class="progress"></div>
+    <div id="keyOutputs" class="keys hidden">
+      <h3>生成的公钥</h3>
+      <textarea id="publicKey" class="key-area" readonly></textarea>
+  <button id="btnCopyGenPub" type="button">复制公钥</button>
+      <h3>生成的私钥 (妥善保管)</h3>
+      <textarea id="privateKey" class="key-area" readonly></textarea>
+  <button id="btnCopyGenPriv" type="button">复制私钥</button>
+      <button id="btnDownloadKeys" type="button">下载 PEM 文件</button>
+    </div>
+  </section>
+
+  <section id="encrypt" class="encrypt-section card">
+    <h2>2. 明文加密 (OAEP + SHA-256)</h2>
+    <textarea id="importPublic" class="key-area" placeholder="粘贴公钥 PEM 用于加密"></textarea>
+    <div id="importPubStatus" class="progress"></div>
+    <textarea id="plainInput" class="doc-area" placeholder="输入需要加密的大文本 (UTF-8)" rows="30"></textarea>
+    <button id="btnEncrypt" disabled>加密</button>
+    <div id="encryptProgress" class="progress"></div>
+    <h3>密文 (Base64 拼接)</h3>
+  <textarea id="cipherOutput" class="doc-area" readonly></textarea>
+  <button id="btnCopyCipher" type="button">复制密文</button>
+  </section>
+
+  <section id="decrypt" class="decrypt-section card">
+    <h2>3. 密文解密</h2>
+    <textarea id="importPrivate" class="key-area" placeholder="粘贴私钥 PEM 用于解密"></textarea>
+    <div id="importPrivStatus" class="progress"></div>
+    <textarea id="cipherInput" class="doc-area" placeholder="粘贴密文 Base64" rows="30"></textarea>
+    <button id="btnDecrypt" disabled>解密</button>
+    <div id="decryptProgress" class="progress"></div>
+    <h3>解密出的明文</h3>
+  <textarea id="plainOutput" class="doc-area" readonly></textarea>
+  <button id="btnCopyPlain" type="button">复制明文</button>
+  </section>
+  </main>
+
+  <footer>
+    <p>提示: 为更高效率的超大文本，可采用混合加密(RSA + 对称AES)。此为纯 RSA 分块，字数太大会消耗性能。</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
